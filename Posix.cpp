@@ -210,14 +210,14 @@ using namespace AES;
 			return -1;
 		}
 		FileInfo* info = getFileInfo(fd);
-		// if(info == NULL)
-		// {
+		if(info == NULL)
+		{
 			return throwIfMinusOne(env, "readBytes", TEMP_FAILURE_RETRY(read(fd, bytes.get() + byteOffset, byteCount)));
-		// }
-		// else
-		// {
-			// return throwIfMinusOne(env, "readBytes", TEMP_FAILURE_RETRY(read(fd, bytes.get(), byteCount)));
-		// }
+		}
+		else
+		{
+			return throwIfMinusOne(env, "readBytes", TEMP_FAILURE_RETRY(decrypted(fd, (char *)bytes.get() + byteOffset, byteCount)));
+		}
 		
 	}
 
@@ -232,13 +232,13 @@ using namespace AES;
 		FileInfo* info = getFileInfo(fd);
 		if(info == NULL)
 		{
-			return throwIfMinusOne(env, "writeBytes", TEMP_FAILURE_RETRY(write(fd, bytes.get(), byteCount)));
+			return throwIfMinusOne(env, "writeBytes", TEMP_FAILURE_RETRY(write(fd, bytes.get() + byteOffset, byteCount)));
 		}
 		else
 		{
 			AES::Cache* cache = info -> getCache();
 			cache -> setFunc(write);
-			return throwIfMinusOne(env, "writeBytes", TEMP_FAILURE_RETRY(encrypted((const char*)bytes.get(), byteCount, cache)));
+			return throwIfMinusOne(env, "writeBytes", TEMP_FAILURE_RETRY(encrypted((const char*)bytes.get() + byteOffset, byteCount, cache)));
 		}
 		
 	}
