@@ -39,14 +39,22 @@ static jstring Runtime_nativeLoad(JNIEnv* env, jclass, jstring javaFilename, job
   	LOG_I("filename:%s\n",filename.c_str());
   	return NULL;
   }
-
+/*
+说明 : native函数列表
+*/
 static JNINativeMethod gMethod[] = 
 {
+	/*
+	说明：第一个参数是Java层的函数名，第二个参数是函数的签名，第三个参数是本地方法的地址
+	*/
  	CPP_NATIVE_METHOD(nativeLoad, "(Ljava/lang/String;Ljava/lang/ClassLoader;Ljava/lang/String;)Ljava/lang/String;", (void*)Runtime_nativeLoad)
 };
 
 void JNIModule::onLoad(JavaVM* vm, JNIEnv* env, void* reserved)
 {
+	/*
+	说明：第二个参数是Java中的包名＋类名
+	*/
  	jniRegisterNativeMethods(env, "java/lang/Runtime", gMethod, NELEM(gMethod));
 }
 }
