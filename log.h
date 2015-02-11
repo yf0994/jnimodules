@@ -18,7 +18,7 @@
 
 #include <android/log.h>
 
- #define TAG "EncryptIO"
+ #define TAG "JNIModule"
 
  #ifdef __cplusplus
  extern "C"

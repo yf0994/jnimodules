@@ -13,29 +13,22 @@
  * limitations under the License.
  */
 
-#ifndef __AES_API_H__
-#define __AES_API_H__
-#include <stdio.h>
-#include "openssl/aes.h"
+#ifndef __JNIMODULE_H__
+#define __JNIMODULE_H__
 
+#include "jni.h"
+#include "log.h"
 
-namespace AES
+namespace jnimodule
 {
-    
-    typedef struct UserKey
-    {
-        unsigned char data[AES_BLOCK_SIZE];
-    } UserKey;
-    
-    class Api
-    {
-    public:
-        static bool initKey(UserKey *uk);
-        static bool encrypts(const char *in, char *out);
-        static bool decrypts(const char *in,  char *out);
-    };
-    
+	class JNIModule
+	{
+	public:
+		JNIModule() {}
+		~JNIModule() {}
+		void onLoad(JavaVM* vm, JNIEnv* env, void* reserved);
+		static jstring Runtime_nativeLoad(JNIEnv* env, jclass, jstring javaFilename, jobject javaLoader, jstring javaLdLibraryPath);
+	};
 }
 
-
-#endif
+#endif 
