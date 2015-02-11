@@ -18,7 +18,7 @@
 #include "jnimodule.h"
 #include "ScopedUtfChars.h"
 #include "jniConstants.h"
-#include "internal_constants.h"
+
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -28,7 +28,7 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <string>
-namespace encryptso
+namespace jnimodule
 {
 
 static jstring Runtime_nativeLoad(JNIEnv* env, jclass, jstring javaFilename, jobject javaLoader, jstring javaLdLibraryPath) {
@@ -42,12 +42,12 @@ static jstring Runtime_nativeLoad(JNIEnv* env, jclass, jstring javaFilename, job
 
 static JNINativeMethod gMethod[] = 
 {
- 		CPP_NATIVE_METHOD(nativeLoad, "(Ljava/lang/String;Ljava/lang/ClassLoader;Ljava/lang/String;)Ljava/lang/String;", (void*)Runtime_nativeLoad)
+ 	CPP_NATIVE_METHOD(nativeLoad, "(Ljava/lang/String;Ljava/lang/ClassLoader;Ljava/lang/String;)Ljava/lang/String;", (void*)Runtime_nativeLoad)
 };
 
 void JNIModule::onLoad(JavaVM* vm, JNIEnv* env, void* reserved)
 {
- 		jniRegisterNativeMethods(env, "java/lang/Runtime", gMethod, NELEM(gMethod));
+ 	jniRegisterNativeMethods(env, "java/lang/Runtime", gMethod, NELEM(gMethod));
 }
 }
 
@@ -61,7 +61,7 @@ void JNIModule::onLoad(JavaVM* vm, JNIEnv* env, void* reserved)
  		   abort();
  	  }
 
- 	  encryptso::JNIModule* module = new encryptso::JNIModule;
+ 	  jnimodule::JNIModule* module = new jnimodule::JNIModule;
  	  module -> onLoad(vm, env, reserved);
  	  delete module;
  	  return JNI_VERSION_1_6;
